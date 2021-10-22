@@ -8,23 +8,30 @@
 #include <allegro5/allegro_font.h>
 #include <allegro5/allegro_primitives.h>
 #include <allegro5/allegro_image.h>
+#include <allegro5/allegro_audio.h>
+#include <allegro5/allegro_acodec.h>
 
 #include "resources.h"
 #include "game.h"
 #include "utils.h"
 
+#define RESERVED_SAMPLES 16
+
 static void system_init(void) {
     init_or_exit(al_init(), "allegro");
     init_or_exit(al_install_keyboard(), "keyboard");
     init_or_exit(al_install_mouse(), "mouse");
+    init_or_exit(al_install_audio(), "audio");
     init_or_exit(al_init_primitives_addon(), "primitives add-on");
     init_or_exit(al_init_image_addon(), "image add-on");
+    init_or_exit(al_init_acodec_addon(), "image add-on");
 
     // al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     // al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
     al_set_config_value(al_get_system_config(), "trace", "level", "debug");
     al_register_assert_handler(assert_handler);
+    al_reserve_samples(RESERVED_SAMPLES);
 }
 
 static void main_event_loop(void) {

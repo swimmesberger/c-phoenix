@@ -7,7 +7,7 @@
 #include <assert.h>
 
 #define MAX_PROJECTILE_COUNT 100
-#define PROJECTILE_SPEED 5
+#define PROJECTILE_SPEED 10
 
 typedef struct GAME_PROJECTILE {
   int pos_x;
@@ -48,7 +48,7 @@ static void projectile_update(GAME_PROJECTILE* projectile) {
   if (projectile_bottom < 0) {
     projectile_disable(projectile);
   }
-  if (projectile_top > HEIGHT) {
+  if (projectile_top > DISPLAY_HEIGHT) {
     projectile_disable(projectile);
   }
 }
@@ -77,14 +77,20 @@ static bool projectile_instance_hit(GAME_PROJECTILE* projectile, int pos_x, int 
           obj_top <= projectile_bottom);
 }
 
-void projectile_add(int pos_x, int pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
+GAME_PROJECTILE* projectile_add(int pos_x, int pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
+  GAME_PROJECTILE* projectile = NULL;
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
-    GAME_PROJECTILE* projectile = projectiles[i];
+    projectile = projectiles[i];
     if (!(projectile->enabled)) {
       projectile_enable(projectile, pos_x, pos_y, color, moveType);
       break;
     }
   }
+  return projectile;
+}
+
+bool projectile_enabled(GAME_PROJECTILE* projectile) {
+  return projectile->enabled;
 }
 
 bool projectile_hit(int pos_x, int pos_y, int width, int height) {

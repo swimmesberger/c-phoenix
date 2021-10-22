@@ -2,6 +2,7 @@
 #include "game.h"
 #include "player.h"
 #include "projectile.h"
+#include "background.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -12,24 +13,31 @@
 #include "resources.h"
 #include "utils.h"
 
+ALLEGRO_COLOR color_back;
+
 void game_init(void) {
 	srand(time(NULL));
+  color_back = al_map_rgb(0, 0, 0);
+  background_init();
   projectile_engine_init();
   player_init();
 }
 
 void game_destroy(void) {
+  background_destroy();
 	player_destroy();
   projectile_engine_destroy();
 }
 
 void game_update(ALLEGRO_TIMER_EVENT event) {
+  background_update(event);
 	player_update(event);
   projectile_engine_update(event);
 }
 
 void game_redraw(void) { 
-	al_draw_bitmap(background_img, 0, 0, 0);
+  al_clear_to_color(color_back);
+  background_redraw();
   player_redraw();
   projectile_engine_redraw();
 

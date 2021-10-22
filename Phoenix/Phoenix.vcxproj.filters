@@ -36,6 +36,9 @@
     <ClCompile Include="projectile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="background.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources.h">
@@ -53,13 +56,30 @@
     <ClInclude Include="projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="background.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="enemy_formation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Image Include="background.jpg">
+    <Image Include="Sprites\background.jpg">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="ship.png">
+    <Image Include="Sprites\ship.png">
       <Filter>Resource Files</Filter>
     </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="sounds\SHOT8.WAV">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\PHOENIX1.WAV">
+      <Filter>Resource Files</Filter>
+    </Media>
+    <Media Include="sounds\PHOENIX2.WAV">
+      <Filter>Resource Files</Filter>
+    </Media>
   </ItemGroup>
 </Project>

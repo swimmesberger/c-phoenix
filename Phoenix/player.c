@@ -3,10 +3,15 @@
 
 #include "resources.h"
 #include "utils.h"
+#include <allegro5/allegro_audio.h>
+#include <stdlib.h>
 
 #define PLAYER_SPEED 5
 #define PLAYER_Y_AREA 100
-#define PLAYER_Y_MAX (HEIGHT - PLAYER_Y_AREA)
+#define PLAYER_Y_MAX (DISPLAY_HEIGHT - PLAYER_Y_AREA)
+
+ALLEGRO_BITMAP* ship_img;
+ALLEGRO_SAMPLE* ship_shoot_sound;
 
 int player_width;
 int player_height;
@@ -19,6 +24,7 @@ float player_y_velocity = 0.0f;
 int player_y_down_count = 0;
 
 ALLEGRO_COLOR color_white;
+GAME_PROJECTILE* current_projectile = NULL;
 
 static bool player_try_move_x(float x_delta) {
   if (x_delta == 0) {
@@ -30,11 +36,11 @@ static bool player_try_move_x(float x_delta) {
   bool can_move = true;
   if (player_new_pos_left < 0) {
     can_move = false;
-  } else if (player_new_pos_right > WIDTH) {
+  } else if (player_new_pos_right > DISPLAY_WIDTH) {
     can_move = false;
   }
   if (!can_move) {
-    player_pos_x = x_delta < 0 ? 0 : (WIDTH-player_width);
+    player_pos_x = x_delta < 0 ? 0 : (DISPLAY_WIDTH-player_width);
     return false;
   }
 
@@ -50,13 +56,13 @@ static bool player_try_move_y(float y_delta) {
   float player_new_pos_top = player_pos_y + y_delta;
   float player_new_pos_bottom = player_new_pos_top + player_height;
   bool can_move = true;
-  if (player_new_pos_bottom > HEIGHT) {
+  if (player_new_pos_bottom > DISPLAY_HEIGHT) {
     can_move = false;
   } else if (player_new_pos_top < PLAYER_Y_MAX) {
     can_move = false;
   }
   if (!can_move) {
-    player_pos_y = y_delta < 0 ? PLAYER_Y_MAX : (HEIGHT-player_height);
+    player_pos_y = y_delta < 0 ? PLAYER_Y_MAX : (DISPLAY_HEIGHT-player_height);
     return false;
   }
 
@@ -66,19 +72,29 @@ static bool player_try_move_y(float y_delta) {
 }
 
 static bool player_shoot() {
-  projectile_add(player_pos_x + player_width/2.0f - PROJECTILE_WIDTH/2.0f, player_pos_y, color_white, Up);
+  // do not allow shooting when the previous projectile is still active
+  if (current_projectile != NULL && projectile_enabled(current_projectile)) {
+    return false;
+  }
+
+  al_play_sample(ship_shoot_sound, 1.0f, 0.5f, 1.0f, ALLEGRO_PLAYMODE_ONCE, NULL);
+  current_projectile = projectile_add(player_pos_x + player_width/2.0f - PROJECTILE_WIDTH/2.0f, player_pos_y, color_white, Up);
+  return true;
 }
 
 void player_init(void) {
+  ship_img = assert_not_null(al_load_bitmap("sprites/ship.png"), "Ship Image");
   player_width = al_get_bitmap_width(ship_img);
   player_height = al_get_bitmap_height(ship_img);
-  player_pos_x = (WIDTH - player_width) / 2;
-  player_pos_y = HEIGHT - player_height - 30;
+  player_pos_x = (DISPLAY_WIDTH - player_width) / 2;
+  player_pos_y = DISPLAY_HEIGHT - player_height - 30;
   color_white = al_map_rgb(255, 255, 255);
+  ship_shoot_sound = assert_not_null(al_load_sample("sounds/SHOT8.WAV"), "Ship Shoot Sound");
 }
 
 void player_destroy(void) {
-  
+  al_destroy_bitmap(ship_img);
+  al_destroy_sample(ship_shoot_sound);
 }
 
 void player_update(ALLEGRO_TIMER_EVENT event) {
