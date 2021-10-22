@@ -71,7 +71,7 @@ static bool player_try_move_y(float y_delta) {
   return true;
 }
 
-static bool player_shoot() {
+static bool player_shoot(void) {
   // do not allow shooting when the previous projectile is still active
   if (current_projectile != NULL && projectile_enabled(current_projectile)) {
     return false;

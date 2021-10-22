@@ -66,6 +66,7 @@ static bool projectile_instance_hit(GAME_PROJECTILE* projectile, int pos_x, int 
   int obj_bottom = obj_top + height;
   int obj_left = pos_x;
   int obj_right = obj_left + width;
+
   int projectile_top = projectile->pos_y;
   int projectile_bottom = projectile_top + PROJECTILE_HEIGHT;
   int projectile_left = projectile->pos_x;

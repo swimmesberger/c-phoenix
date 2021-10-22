@@ -1,4 +1,5 @@
 #include "background.h"
+#include "utils.h"
 #include "resources.h"
 #include <allegro5/allegro_audio.h>
 
