@@ -1,0 +1,135 @@
+{
+  "lvlBonus": 100,
+  "imgObjects": [
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 20,
+      "x": 141
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 31,
+      "x": 161
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 40,
+      "x": 181
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 50,
+      "x": 201
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 70,
+      "x": 202
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 80,
+      "x": 181
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 90,
+      "x": 161
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 100,
+      "x": 141
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 90,
+      "x": 121
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 80,
+      "x": 101
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 70,
+      "x": 81
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 51,
+      "x": 81
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 40,
+      "x": 101
+    },
+    {
+      "ki": {
+        "name": "NormalAttackKI",
+        "config": []
+      },
+      "className": "EasyBirdEnemy",
+      "y": 30,
+      "x": 121
+    }
+  ],
+  "formationKI": {
+    "name": "LeftRightEnemyKI",
+    "config": []
+  }
+}

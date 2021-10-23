@@ -185,6 +185,11 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="Sprites\background.jpg" />
+    <Image Include="sprites\enemy.png" />
+    <Image Include="sprites\enemy_sprites.png" />
+    <Image Include="sprites\expl1.png" />
+    <Image Include="sprites\expl2.png" />
+    <Image Include="sprites\expl3.png" />
     <Image Include="Sprites\ship.png" />
   </ItemGroup>
   <ItemGroup>

@@ -73,6 +73,21 @@
     <Image Include="Sprites\ship.png">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="sprites\expl3.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\expl1.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\expl2.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\enemy.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\enemy_sprites.png">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
   <ItemGroup>
     <Media Include="sounds\SHOT8.WAV">

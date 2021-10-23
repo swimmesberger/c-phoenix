@@ -6,7 +6,7 @@
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_font.h>
 
-#define DISPLAY_WIDTH 320
+#define DISPLAY_WIDTH 390
 #define DISPLAY_HEIGHT 480
 #define REFRESH_RATE (1.0 / 60)
 

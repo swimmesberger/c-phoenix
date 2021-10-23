@@ -1,5 +1,6 @@
 #include "projectile.h"
 #include "resources.h"
+#include "utils.h"
 
 #include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
@@ -108,7 +109,7 @@ void projectile_engine_init(void) {
   color_white = al_map_rgb(255, 255, 255);
 
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
-    GAME_PROJECTILE* projectile = (GAME_PROJECTILE*)malloc(sizeof(GAME_PROJECTILE));
+    GAME_PROJECTILE* projectile = (GAME_PROJECTILE*)assert_not_null(malloc(sizeof(GAME_PROJECTILE)), "Projectile");
     projectile_disable(projectile);
     projectiles[i] = projectile;
   }
