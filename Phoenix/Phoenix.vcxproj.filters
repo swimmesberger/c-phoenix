@@ -82,9 +82,6 @@
     <Image Include="sprites\expl2.png">
       <Filter>Resource Files</Filter>
     </Image>
-    <Image Include="sprites\enemy.png">
-      <Filter>Resource Files</Filter>
-    </Image>
     <Image Include="sprites\enemy_sprites.png">
       <Filter>Resource Files</Filter>
     </Image>
