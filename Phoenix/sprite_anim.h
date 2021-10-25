@@ -9,7 +9,8 @@ typedef enum SPRITE_ANIM_PLAY_MODE {
   SPRITE_ANIM_PLAY_MODE_LOOP,
 } SPRITE_ANIM_PLAY_MODE;
 
-SPRITE_ANIM* sprite_animation_load(const char* filename, int sprite_count, int sprite_x_offsets[], float speed);
+SPRITE_ANIM* sprite_animation_load(const char* filename, int sprite_count, int sprite_width, float speed);
+SPRITE_ANIM* sprite_animation_create(ALLEGRO_BITMAP* img, int sprite_count, int sprite_width, float speed);
 int sprite_animation_get_width(SPRITE_ANIM* sprite);
 int sprite_animation_get_height(SPRITE_ANIM* sprite);
 bool sprite_animation_is_started(SPRITE_ANIM* sprite);

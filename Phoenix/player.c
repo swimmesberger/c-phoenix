@@ -9,6 +9,8 @@
 #define PLAYER_SPEED 5
 #define PLAYER_Y_AREA 100
 #define PLAYER_Y_MAX (DISPLAY_HEIGHT - PLAYER_Y_AREA)
+// how many ticks until a new shoot is possible
+#define PLAYER_SHOOT_WAIT_TICK (FRAME_COUNT * 0.6f);
 
 ALLEGRO_BITMAP* ship_img;
 ALLEGRO_SAMPLE* ship_shoot_sound;
@@ -24,7 +26,8 @@ float player_y_velocity = 0.0f;
 int player_y_down_count = 0;
 
 ALLEGRO_COLOR color_white;
-GAME_PROJECTILE* current_projectile = NULL;
+// disallow shooting as long as this count is > 0
+int player_last_shoot_tick_count = 0;
 
 static bool player_try_move_x(float x_delta) {
   if (x_delta == 0) {
@@ -73,12 +76,14 @@ static bool player_try_move_y(float y_delta) {
 
 static bool player_shoot(void) {
   // do not allow shooting when the previous projectile is still active
-  if (current_projectile != NULL && projectile_enabled(current_projectile)) {
+  if (player_last_shoot_tick_count > 0) {
     return false;
   }
 
   al_play_sample(ship_shoot_sound, 1.0f, 0.5f, 1.0f, ALLEGRO_PLAYMODE_ONCE, NULL);
-  current_projectile = projectile_add(player_pos_x + player_width/2.0f - PROJECTILE_WIDTH/2.0f, player_pos_y, color_white, Up);
+  // spawn the projectile at the center at the top of the ship
+  projectile_add(player_pos_x + player_width/2.0f - PROJECTILE_WIDTH/2.0f, player_pos_y, color_white, Up);
+  player_last_shoot_tick_count = PLAYER_SHOOT_WAIT_TICK;
   return true;
 }
 
@@ -100,6 +105,9 @@ void player_destroy(void) {
 void player_update(ALLEGRO_TIMER_EVENT event) {
   player_try_move_x(player_x_velocity);
   player_try_move_y(player_y_velocity);
+  if (player_last_shoot_tick_count > 0) {
+    player_last_shoot_tick_count -= 1;
+  }
 }
 
 void player_redraw(void) {

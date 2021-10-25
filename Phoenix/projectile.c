@@ -11,8 +11,8 @@
 #define PROJECTILE_SPEED 10
 
 typedef struct GAME_PROJECTILE {
-  int pos_x;
-  int pos_y;
+  float pos_x;
+  float pos_y;
   ALLEGRO_COLOR color;
   PROJECTILE_MOVE_TYPE moveType;
   bool enabled;
@@ -61,17 +61,16 @@ static void projectile_redraw(GAME_PROJECTILE* projectile) {
                            projectile->color);
 }
 
-static bool projectile_instance_hit(GAME_PROJECTILE* projectile, int pos_x, int pos_y,
-                           int width, int height) {
-  int obj_top = pos_y;
-  int obj_bottom = obj_top + height;
-  int obj_left = pos_x;
-  int obj_right = obj_left + width;
+static bool projectile_instance_hit(GAME_PROJECTILE* projectile, float pos_x, float pos_y, int width, int height) {
+  float obj_top = pos_y;
+  float obj_bottom = obj_top + height;
+  float obj_left = pos_x;
+  float obj_right = obj_left + width;
 
-  int projectile_top = projectile->pos_y;
-  int projectile_bottom = projectile_top + PROJECTILE_HEIGHT;
-  int projectile_left = projectile->pos_x;
-  int projectile_right = projectile_left + PROJECTILE_WIDTH;
+  float projectile_top = projectile->pos_y;
+  float projectile_bottom = projectile_top + PROJECTILE_HEIGHT;
+  float projectile_left = projectile->pos_x;
+  float projectile_right = projectile_left + PROJECTILE_WIDTH;
 
   return (projectile_left <= obj_right && 
           obj_left <= projectile_right &&
@@ -79,7 +78,7 @@ static bool projectile_instance_hit(GAME_PROJECTILE* projectile, int pos_x, int 
           obj_top <= projectile_bottom);
 }
 
-GAME_PROJECTILE* projectile_add(int pos_x, int pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
+GAME_PROJECTILE* projectile_add(float pos_x, float pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
   GAME_PROJECTILE* projectile = NULL;
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     projectile = projectiles[i];
@@ -91,18 +90,22 @@ GAME_PROJECTILE* projectile_add(int pos_x, int pos_y, ALLEGRO_COLOR color, PROJE
   return projectile;
 }
 
+void projectile_remove(GAME_PROJECTILE* projectile) {
+  projectile_disable(projectile);
+}
+
 bool projectile_enabled(GAME_PROJECTILE* projectile) {
   return projectile->enabled;
 }
 
-bool projectile_hit(int pos_x, int pos_y, int width, int height) {
+GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height) {
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     GAME_PROJECTILE* projectile = projectiles[i];
     if (projectile->enabled && projectile_instance_hit(projectile, pos_x, pos_y, width, height)) {
-      return true;
+      return projectile;
     }
   }
-  return false;
+  return NULL;
 }
 
 void projectile_engine_init(void) {

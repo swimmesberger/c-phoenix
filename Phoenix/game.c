@@ -4,6 +4,7 @@
 #include "projectile.h"
 #include "background.h"
 #include "enemies.h"
+#include "explosions.h"
 
 #include <stdbool.h>
 #include <stdlib.h>
@@ -22,6 +23,7 @@ void game_init(void) {
 
   background_init();
   projectile_engine_init();
+  explosions_init();
   enemies_init(Level1);
   player_init();
 }
@@ -30,6 +32,7 @@ void game_destroy(void) {
 	player_destroy();
   enemies_destroy();
   projectile_engine_destroy();
+  explosions_destroy();
   background_destroy();
 }
 
@@ -38,6 +41,7 @@ void game_update(ALLEGRO_TIMER_EVENT event) {
   enemies_update(event);
 	player_update(event);
   projectile_engine_update(event);
+  explosions_update(event);
 }
 
 void game_redraw(void) { 
@@ -46,6 +50,7 @@ void game_redraw(void) {
   enemies_redraw();
   player_redraw();
   projectile_engine_redraw();
+  explosions_redraw();
 
 	al_flip_display();
 }

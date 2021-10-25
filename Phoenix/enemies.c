@@ -1,8 +1,11 @@
 #include "enemies.h"
 #include "utils.h"
 #include "sprite_anim.h"
+#include "projectile.h"
+#include "explosions.h"
 #include <stdbool.h>
 #include <allegro5/events.h>
+#include <allegro5/allegro_audio.h>
 
 #define MAX_FLYING_ENEMIES 5
 
@@ -11,6 +14,8 @@
 #define FLY_FRAME_0_X 0
 #define FLY_FRAME_1_X (FLY_FRAME_0_X + FLY_FRAME_WIDTH)
 #define FLY_FRAME_2_X (FLY_FRAME_1_X + FLY_FRAME_WIDTH)
+#define FLY_FRAME_SPEED 0.833f
+#define FLY_FRAME_COUNT 3
 
 /*
  when the enemy moves back to the form position, a "diff" should be added that
@@ -80,6 +85,9 @@ static int enemies_flying_count(void) {
   int flying_count = 0;
   for (int i = 0; i < enemies_count; i++) {
     ENEMY* enemy = enemies[i];
+    if (enemy == NULL) {
+      continue;
+    }
     if (enemy->isFlying) {
       flying_count += 1;
     }
@@ -98,14 +106,34 @@ static void enemies_update_flying(void) {
   }
 }
 
+static void enemy_hit(int idx, ENEMY* enemy, GAME_PROJECTILE* hit_projectile) {
+  float pos_center_x = enemy->pos_x + enemy_width / 2.0f;
+  float pos_center_y = enemy->pos_y + enemy_height / 2.0f;
+  float expl_center_x = EXPLOSION_FRAME_WIDTH / 2.0f;
+  float expl_center_y = EXPLOSION_FRAME_HEIGHT / 2.0f;
+  explosion_add(pos_center_x - expl_center_x, pos_center_y - expl_center_y);
+  projectile_remove(hit_projectile);
+  enemies[idx] = NULL;
+}
+
+static void enemies_check_projectile_hit(void) {
+  for (int i = 0; i < enemies_count; i++) {
+    ENEMY* enemy = enemies[i];
+    if (enemy == NULL) {
+      continue;
+    }
+    int enemy_width = sprite_animation_get_width(enemy_img);
+    int enemy_height = sprite_animation_get_height(enemy_img);
+    GAME_PROJECTILE* hit_projectile = projectile_hit(enemy->pos_x, enemy->pos_y, enemy_width, enemy_height);
+    if (hit_projectile != NULL) {
+      enemy_hit(i, enemy, hit_projectile);
+    }
+  }
+}
+
 void enemies_init(LEVEL_TYPE levelType) {
-  // freed by sprite_animation_destroy
-  int* enemy_img_x_offset = (int*) assert_not_null(malloc(3*sizeof(int)), "Enemy Sprite X Offset");
-  enemy_img_x_offset[0] = FLY_FRAME_0_X;
-  enemy_img_x_offset[1] = FLY_FRAME_1_X;
-  enemy_img_x_offset[2] = FLY_FRAME_2_X;
   // for 60 fps we end up with around a frame change every 10th frame
-  enemy_img = assert_not_null(sprite_animation_load("sprites/enemy_sprites.png", 3, enemy_img_x_offset, 0.167f), "Enemy Image");
+  enemy_img = assert_not_null(sprite_animation_load("sprites/enemy_sprites.png", FLY_FRAME_COUNT, FLY_FRAME_WIDTH, FLY_FRAME_SPEED), "Enemy Image");
   enemy_width = sprite_animation_get_width(enemy_img);
   enemy_height = sprite_animation_get_height(enemy_img);
   enemies_count = 0;
@@ -122,15 +150,26 @@ void enemies_update(ALLEGRO_TIMER_EVENT event) {
     sprite_animation_start(enemy_img, SPRITE_ANIM_PLAY_MODE_LOOP);
   }
   sprite_animation_update(enemy_img);
+  enemies_check_projectile_hit();
 }
 
 void enemies_redraw(void) {
   for (int i = 0; i < enemies_count; i++) {
     ENEMY* enemy = enemies[i];
+    if (enemy == NULL) {
+      continue;
+    }
     sprite_animation_draw(enemy_img, enemy->pos_x, enemy->pos_y);
   }
 }
 
 void enemies_destroy(void) {
   sprite_animation_destroy(&enemy_img);
+  for (int i = 0; i < enemies_count; i++) {
+    ENEMY* enemy = enemies[i];
+    if (enemy != NULL) {
+      enemies[i] = NULL;
+      free(enemy);
+    }
+  }
 }

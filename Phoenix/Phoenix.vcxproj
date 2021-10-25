@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="background.c" />
     <ClCompile Include="enemies.c" />
+    <ClCompile Include="explosions.c" />
     <ClCompile Include="game.c" />
     <ClCompile Include="main.c" />
     <ClCompile Include="player.c" />
@@ -179,6 +180,7 @@
   <ItemGroup>
     <ClInclude Include="background.h" />
     <ClInclude Include="enemies.h" />
+    <ClInclude Include="explosions.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="resources.h" />
@@ -188,12 +190,11 @@
   <ItemGroup>
     <Image Include="Sprites\background.jpg" />
     <Image Include="sprites\enemy_sprites.png" />
-    <Image Include="sprites\expl1.png" />
-    <Image Include="sprites\expl2.png" />
-    <Image Include="sprites\expl3.png" />
+    <Image Include="sprites\explosion_sprites.png" />
     <Image Include="Sprites\ship.png" />
   </ItemGroup>
   <ItemGroup>
+    <Media Include="sounds\explosion.wav" />
     <Media Include="sounds\PHOENIX1.WAV" />
     <Media Include="sounds\PHOENIX2.WAV" />
     <Media Include="sounds\SHOT8.WAV" />
