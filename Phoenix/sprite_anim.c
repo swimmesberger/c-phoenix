@@ -65,6 +65,10 @@ bool sprite_animation_is_started(SPRITE_ANIM* sprite) {
   return sprite->started;
 }
 
+bool sprite_animation_is_visible(SPRITE_ANIM* sprite) {
+  return sprite->started;
+}
+
 void sprite_animation_start(SPRITE_ANIM* sprite, SPRITE_ANIM_PLAY_MODE play_mode) {
   sprite->play_mode = play_mode;
   sprite->started = true;

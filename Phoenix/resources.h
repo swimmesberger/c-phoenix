@@ -15,7 +15,8 @@ extern bool redraw;
 extern ALLEGRO_TIMER* timer;
 extern ALLEGRO_EVENT_QUEUE* queue;
 extern ALLEGRO_DISPLAY* disp;
-extern ALLEGRO_FONT* font;
+extern ALLEGRO_FONT* retro_font_large;
+extern ALLEGRO_FONT* retro_font_small;
 
 void init_assets(void);
 void destroy_assets(void);

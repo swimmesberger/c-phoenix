@@ -51,6 +51,12 @@
     <ClCompile Include="explosions.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="map.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="header.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources.h">
@@ -77,6 +83,12 @@
     <ClInclude Include="explosions.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="map.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="Sprites\background.jpg">
@@ -89,6 +101,9 @@
       <Filter>Resource Files</Filter>
     </Image>
     <Image Include="sprites\explosion_sprites.png">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="sprites\ship_life.png">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>
@@ -105,5 +120,10 @@
     <Media Include="sounds\explosion.wav">
       <Filter>Resource Files</Filter>
     </Media>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\ARCADECLASSIC.TTF">
+      <Filter>Resource Files</Filter>
+    </Font>
   </ItemGroup>
 </Project>

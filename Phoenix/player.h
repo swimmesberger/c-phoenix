@@ -4,6 +4,7 @@
 
 void player_init(void);
 void player_update(ALLEGRO_TIMER_EVENT event);
+int player_get_life(void);
 void player_redraw(void);
 
 void player_key_down(ALLEGRO_KEYBOARD_EVENT event);

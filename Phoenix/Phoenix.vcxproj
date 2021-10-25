@@ -103,6 +103,13 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
+    <Allegro_AddonImage>true</Allegro_AddonImage>
+    <Allegro_AddonTTF>true</Allegro_AddonTTF>
+    <Allegro_AddonPrimitives>true</Allegro_AddonPrimitives>
+    <Allegro_AddonAudio>true</Allegro_AddonAudio>
+    <Allegro_AddonAcodec>true</Allegro_AddonAcodec>
+    <Allegro_AddonFont>true</Allegro_AddonFont>
+    <Allegro_AddonColor>true</Allegro_AddonColor>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -169,12 +176,13 @@
     <ClCompile Include="enemies.c" />
     <ClCompile Include="explosions.c" />
     <ClCompile Include="game.c" />
+    <ClCompile Include="header.c" />
     <ClCompile Include="main.c" />
+    <ClCompile Include="map.c" />
     <ClCompile Include="player.c" />
     <ClCompile Include="projectile.c" />
     <ClCompile Include="resources.c" />
     <ClCompile Include="sprite_anim.c" />
-    <ClCompile Include="sprite_anim.h" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>
@@ -182,9 +190,12 @@
     <ClInclude Include="enemies.h" />
     <ClInclude Include="explosions.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="header.h" />
+    <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="resources.h" />
     <ClInclude Include="projectile.h" />
+    <ClInclude Include="sprite_anim.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -192,12 +203,16 @@
     <Image Include="sprites\enemy_sprites.png" />
     <Image Include="sprites\explosion_sprites.png" />
     <Image Include="Sprites\ship.png" />
+    <Image Include="sprites\ship_life.png" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="sounds\explosion.wav" />
     <Media Include="sounds\PHOENIX1.WAV" />
     <Media Include="sounds\PHOENIX2.WAV" />
     <Media Include="sounds\SHOT8.WAV" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="fonts\ARCADECLASSIC.TTF" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

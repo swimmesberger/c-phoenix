@@ -29,18 +29,6 @@ void assert_handler(const char* expr, const char* file, int line, const char* fu
     assert(false);
 }
 
-ALLEGRO_COLOR color_random(float min_value) {
-    return al_map_rgb_f(
-        (float)rand() / RAND_MAX + min_value,
-        (float)rand() / RAND_MAX + min_value,
-        (float)rand() / RAND_MAX + min_value);
-}
-
-
-bool color_equal(ALLEGRO_COLOR a, ALLEGRO_COLOR b) {
-    return memcmp(&a, &b, sizeof(ALLEGRO_COLOR)) == 0;
-}
-
-bool is_within(int val, int min, int max) {
-    return min <= val && val <= max;
+int random_number(int lower, int upper) {
+  return (rand() % (upper - lower + 1)) + lower;
 }

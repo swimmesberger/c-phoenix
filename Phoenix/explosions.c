@@ -1,10 +1,11 @@
 #include "explosions.h"
 #include "utils.h"
-#include <sprite_anim.h>
+#include "sprite_anim.h"
 #include <allegro5/allegro_audio.h>
 #include <stdlib.h>
 
-#define MAX_EXPLOSION_COUNT 100
+// we pre-init an array of explosions - this is the maximum possible amount
+#define MAX_EXPLOSION_COUNT 20
 #define EXPLOSION_SPEED 0.8f
 #define EXPLOSION_FRAME_COUNT 3
 
@@ -31,19 +32,25 @@ static void explosion_enable(EXPLOSION* explosion, int pos_x, int pos_y) {
   explosion->enabled = true;
 }
 
-void explosion_add(float pos_x, float pos_y) {
+EXPLOSION* explosion_add(float pos_x, float pos_y) {
   EXPLOSION* explosion = NULL;
   for (int i = 0; i < MAX_EXPLOSION_COUNT; i++) {
-    explosion = explosions[i];
-    if (!(explosion->enabled)) {
-      explosion_enable(explosion, pos_x, pos_y);
+    EXPLOSION* inner_exp = explosions[i];
+    if (!(inner_exp->enabled)) {
+      explosion = inner_exp;
       break;
     }
   }
   if (explosion != NULL) {
+    explosion_enable(explosion, pos_x, pos_y);
     al_play_sample(explosion_sound, 1.0f, 0.5f, 1.0f, ALLEGRO_PLAYMODE_ONCE, NULL);
     sprite_animation_start(explosion->explosion_sprite, SPRITE_ANIM_PLAY_MODE_ONCE);
   }
+  return explosion;
+}
+
+bool explosion_visible(EXPLOSION* explosion) {
+  return explosion->enabled;
 }
 
 void explosions_init(void) {
@@ -81,8 +88,8 @@ void explosions_redraw(void) {
 void explosions_destroy(void) {
   for (int i = 0; i < MAX_EXPLOSION_COUNT; i++) {
     EXPLOSION* explosion = explosions[i];
-    sprite_animation_destroy(explosion->explosion_sprite);
+    sprite_animation_destroy(&explosion->explosion_sprite);
   }
-  al_destroy_bitmap(&explosion_img);
+  al_destroy_bitmap(explosion_img);
   al_destroy_sample(explosion_sound);
 }

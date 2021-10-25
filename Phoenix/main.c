@@ -10,6 +10,7 @@
 #include <allegro5/allegro_image.h>
 #include <allegro5/allegro_audio.h>
 #include <allegro5/allegro_acodec.h>
+#include <allegro5/allegro_ttf.h>
 
 #include "resources.h"
 #include "game.h"
@@ -25,6 +26,7 @@ static void system_init(void) {
     init_or_exit(al_init_primitives_addon(), "primitives add-on");
     init_or_exit(al_init_image_addon(), "image add-on");
     init_or_exit(al_init_acodec_addon(), "image add-on");
+    init_or_exit(al_init_ttf_addon(), "ttf add-on");
 
     // al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
     // al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);

@@ -4,7 +4,10 @@
 #define EXPLOSION_FRAME_WIDTH 52
 #define EXPLOSION_FRAME_HEIGHT 47
 
-void explosion_add(float pos_x, float pos_y);
+typedef struct EXPLOSION EXPLOSION;
+
+EXPLOSION* explosion_add(float pos_x, float pos_y);
+bool explosion_visible(EXPLOSION* explosion);
 
 void explosions_init(void);
 void explosions_update(ALLEGRO_TIMER_EVENT event);

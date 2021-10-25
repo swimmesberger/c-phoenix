@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <assert.h>
 
-#define MAX_PROJECTILE_COUNT 100
+// we pre-init an array of projectiles - this is the maximum possible amount
+#define MAX_PROJECTILE_COUNT 50
+// how many pixels a projectile moves each tick
 #define PROJECTILE_SPEED 10
 
 typedef struct GAME_PROJECTILE {
@@ -19,13 +21,13 @@ typedef struct GAME_PROJECTILE {
 } GAME_PROJECTILE;
 
 GAME_PROJECTILE* projectiles[MAX_PROJECTILE_COUNT];
-ALLEGRO_COLOR color_white;
+ALLEGRO_COLOR shoot_color;
 
 static void projectile_disable(GAME_PROJECTILE* projectile) {
   projectile->pos_x = 0;
   projectile->pos_y = 0;
-  projectile->color = color_white;
-  projectile->moveType = Up;
+  projectile->color = shoot_color;
+  projectile->moveType = PROJECTILE_MOVE_TYPE_UP;
   projectile->enabled = false;
 }
 
@@ -38,7 +40,7 @@ static void projectile_enable(GAME_PROJECTILE* projectile, int pos_x, int pos_y,
 }
 
 static void projectile_update(GAME_PROJECTILE* projectile) {
-  if (projectile->moveType == Up) {
+  if (projectile->moveType == PROJECTILE_MOVE_TYPE_UP) {
     projectile->pos_y = projectile->pos_y - PROJECTILE_SPEED;
   } else {
     projectile->pos_y = projectile->pos_y + PROJECTILE_SPEED;
@@ -98,10 +100,10 @@ bool projectile_enabled(GAME_PROJECTILE* projectile) {
   return projectile->enabled;
 }
 
-GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height) {
+GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height, PROJECTILE_MOVE_TYPE moveType) {
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     GAME_PROJECTILE* projectile = projectiles[i];
-    if (projectile->enabled && projectile_instance_hit(projectile, pos_x, pos_y, width, height)) {
+    if (projectile->enabled && projectile->moveType == moveType && projectile_instance_hit(projectile, pos_x, pos_y, width, height)) {
       return projectile;
     }
   }
@@ -109,7 +111,7 @@ GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height)
 }
 
 void projectile_engine_init(void) {
-  color_white = al_map_rgb(255, 255, 255);
+  shoot_color = al_map_rgb(255, 255, 255);
 
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     GAME_PROJECTILE* projectile = (GAME_PROJECTILE*)assert_not_null(malloc(sizeof(GAME_PROJECTILE)), "Projectile");

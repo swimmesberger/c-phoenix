@@ -13,6 +13,7 @@ SPRITE_ANIM* sprite_animation_load(const char* filename, int sprite_count, int s
 SPRITE_ANIM* sprite_animation_create(ALLEGRO_BITMAP* img, int sprite_count, int sprite_width, float speed);
 int sprite_animation_get_width(SPRITE_ANIM* sprite);
 int sprite_animation_get_height(SPRITE_ANIM* sprite);
+bool sprite_animation_is_visible(SPRITE_ANIM* sprite);
 bool sprite_animation_is_started(SPRITE_ANIM* sprite);
 void sprite_animation_start(SPRITE_ANIM* sprite, SPRITE_ANIM_PLAY_MODE play_mode);
 bool sprite_animation_update(SPRITE_ANIM* sprite);
