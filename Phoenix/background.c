@@ -29,7 +29,6 @@ void background_update(ALLEGRO_TIMER_EVENT event) {
 void background_redraw(void) {
   al_draw_bitmap(background_img, 0, background_pos_y - background_height, 0);
   al_draw_bitmap(background_img, 0, background_pos_y, 0);
-  al_draw_bitmap(background_img, 0, background_pos_y + background_height, 0);
 }
 
 void background_destroy(void) {

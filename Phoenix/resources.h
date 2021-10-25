@@ -1,5 +1,3 @@
-// file: src/resources.h
-
 #pragma once
 
 #include <stdbool.h>
@@ -8,7 +6,8 @@
 
 #define DISPLAY_WIDTH 390
 #define DISPLAY_HEIGHT 480
-#define REFRESH_RATE (1.0 / 60)
+#define FRAME_COUNT 60
+#define REFRESH_RATE (1.0 / FRAME_COUNT)
 
 extern bool done;
 extern bool redraw;

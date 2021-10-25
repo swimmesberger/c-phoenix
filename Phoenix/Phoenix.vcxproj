@@ -172,6 +172,8 @@
     <ClCompile Include="player.c" />
     <ClCompile Include="projectile.c" />
     <ClCompile Include="resources.c" />
+    <ClCompile Include="sprite_anim.c" />
+    <ClCompile Include="sprite_anim.h" />
     <ClCompile Include="utils.c" />
   </ItemGroup>
   <ItemGroup>

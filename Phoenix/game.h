@@ -1,5 +1,3 @@
-// file: src/game.h
-
 #pragma once
 
 #include <allegro5/allegro5.h>

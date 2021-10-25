@@ -42,6 +42,12 @@
     <ClCompile Include="enemies.c">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="sprite_anim.h">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite_anim.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="resources.h">
