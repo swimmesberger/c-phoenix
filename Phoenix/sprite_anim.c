@@ -48,7 +48,7 @@ SPRITE_ANIM* sprite_animation_create(ALLEGRO_BITMAP* img, int sprite_count, int 
   sprite_anim->img_height = al_get_bitmap_height(img);
   sprite_anim->sprite_count = sprite_count;
   sprite_anim->sprite_width = sprite_width;
-  sprite_anim->frame_tick_expected = FRAME_COUNT - (speed * FRAME_COUNT);
+  sprite_anim->frame_tick_expected = (1.0f - speed) * FRAME_COUNT; // speed goes from 0 - 1, 1 = every tick, 0 = every 60 tick = every second, 0.5f = every half of a second
   sprite_animation_reset(sprite_anim);
   return sprite_anim;
 }

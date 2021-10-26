@@ -64,20 +64,10 @@ static void projectile_redraw(GAME_PROJECTILE* projectile) {
 }
 
 static bool projectile_instance_hit(GAME_PROJECTILE* projectile, float pos_x, float pos_y, int width, int height) {
-  float obj_top = pos_y;
-  float obj_bottom = obj_top + height;
-  float obj_left = pos_x;
-  float obj_right = obj_left + width;
-
-  float projectile_top = projectile->pos_y;
-  float projectile_bottom = projectile_top + PROJECTILE_HEIGHT;
-  float projectile_left = projectile->pos_x;
-  float projectile_right = projectile_left + PROJECTILE_WIDTH;
-
-  return (projectile_left <= obj_right && 
-          obj_left <= projectile_right &&
-          projectile_top <= obj_bottom && 
-          obj_top <= projectile_bottom);
+  return is_rect_intersect(
+    projectile->pos_x, projectile->pos_y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT,
+    pos_x, pos_y, width, height
+  );
 }
 
 GAME_PROJECTILE* projectile_add(float pos_x, float pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {

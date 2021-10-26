@@ -83,18 +83,19 @@ void map_init(void) {
 }
 
 void map_redraw(void) {
+  int primary_text_y = (DISPLAY_HEIGHT / 2.0f) - full_screen_text_height;
   if (full_screen_text != NULL) {
     al_draw_text(
         retro_font_large, text_color,
         (DISPLAY_WIDTH / 2.0f) - (full_screen_text_width / 2.0f),
-        (DISPLAY_HEIGHT / 2.0f) - (full_screen_text_height / 2.0f), 0,
+        primary_text_y, 0,
         full_screen_text
     );
   }
   if (full_screen_text_sub != NULL) {
     al_draw_text(retro_font_large, text_color,
                  (DISPLAY_WIDTH / 2.0f) - (full_screen_text_width / 2.0f),
-                 (DISPLAY_HEIGHT / 2.0f) - (full_screen_text_height / 2.0f) + full_screen_text_height, 0,
+                 primary_text_y + full_screen_text_height, 0,
                  full_screen_text_sub);
   }
 }

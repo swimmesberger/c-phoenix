@@ -4,6 +4,7 @@
 #include "utils.h"
 #include "explosions.h"
 #include "map.h"
+#include "enemies.h"
 
 #include <allegro5/allegro_audio.h>
 #include <stdlib.h>
@@ -39,14 +40,13 @@ int player_life = 3;
 int player_hit_tick = 0;
 int player_hit_tick_phase = 0;
 
-static void player_hit(GAME_PROJECTILE* hit_projectile) {
+static void player_hit(void) {
   float pos_center_x = player_pos_x + player_width / 2.0f;
   float pos_center_y = player_pos_y + player_height / 2.0f;
   float expl_center_x = EXPLOSION_FRAME_WIDTH / 2.0f;
   float expl_center_y = EXPLOSION_FRAME_HEIGHT / 2.0f;
   player_explosion = explosion_add(pos_center_x - expl_center_x,
                                 pos_center_y - expl_center_y);
-  projectile_remove(hit_projectile);
   player_life -= 1;
   player_visible = false;
 }
@@ -69,7 +69,17 @@ static void player_check_projectile_hit(void) {
       projectile_hit(player_pos_x, player_pos_y, player_width, player_height,
                       PROJECTILE_MOVE_TYPE_DOWN);
   if (hit_projectile != NULL) {
-    player_hit(hit_projectile);
+    player_hit();
+    projectile_remove(hit_projectile);
+  }
+}
+
+static void player_check_hit(void) {
+  // check if the player got hit by a projectile
+  player_check_projectile_hit();
+  // check if a enemy crashed into the player
+  if (enemies_hit(player_pos_x, player_pos_y, player_width, player_height)) {
+    player_hit();
   }
 }
 
@@ -187,7 +197,7 @@ void player_update(ALLEGRO_TIMER_EVENT event) {
     player_try_move_y(player_y_velocity);
   }
 
-  player_check_projectile_hit();
+  player_check_hit();
   player_cooldown_update();
   player_explosion_update();
 }
