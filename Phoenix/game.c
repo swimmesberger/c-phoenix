@@ -1,4 +1,3 @@
-// file: src/game.c
 #include "game.h"
 #include "player.h"
 #include "projectile.h"
@@ -43,21 +42,21 @@ static void game_check_end(void) {
 }
 
 void game_init(void) {
-	srand(time(NULL));
+  srand(time(NULL));
   background_color = al_map_rgb(0, 0, 0);
 
   map_init();
   background_init();
   projectile_engine_init();
   explosions_init();
-  enemies_init(Level1);
+  enemies_init(LEVEL_TYPE_LEVEL_1);
   player_init();
   header_init();
 }
 
 void game_destroy(void) {
   header_destroy();
-	player_destroy();
+  player_destroy();
   enemies_destroy();
   projectile_engine_destroy();
   explosions_destroy();
@@ -68,7 +67,7 @@ void game_destroy(void) {
 void game_update(ALLEGRO_TIMER_EVENT event) {
   background_update(event);
   enemies_update(event);
-	player_update(event);
+  player_update(event);
   projectile_engine_update(event);
   explosions_update(event);
   header_update(event);
@@ -84,7 +83,7 @@ void game_redraw(void) {
   explosions_redraw();
   map_redraw();
   header_redraw();
-	al_flip_display();
+  al_flip_display();
 }
 
 void mouse_move(ALLEGRO_MOUSE_EVENT event) {

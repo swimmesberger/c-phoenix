@@ -14,7 +14,10 @@
 #define PLAYER_Y_MAX (DISPLAY_HEIGHT - PLAYER_Y_AREA)
 // how many ticks until a new shoot is possible
 #define PLAYER_SHOOT_WAIT_TICK (FRAME_COUNT * 0.6f);
+
+// how long the player is in a single visible|invisible state while invincible
 #define PLAYER_HIT_WAIT_TICK (FRAME_COUNT * 0.15f);
+// how many times the player switches between visible|invisible while invincible
 #define PLAYER_HIT_TICK_PHASES 20;
 
 ALLEGRO_BITMAP* ship_img;
@@ -142,27 +145,39 @@ static bool player_shoot(void) {
 }
 
 static void player_explosion_update(void) {
-  if (!player_visible && player_is_exploding()) {
+  // while the player is exploding we do not need to update the invicible state ticks
+  if (player_is_exploding()) {
+    return;
+  }
+
+  if (!player_visible && player_explosion != NULL) {
+    // this will be hit the first time when the explosion is finished
+    // here we set the initial values for the "invincible" mode
     player_hit_tick = PLAYER_HIT_WAIT_TICK;
     player_hit_tick_phase = PLAYER_HIT_TICK_PHASES;
     player_visible = true;
-  } else if(player_hit_tick_phase > 0) {
     player_explosion = NULL;
+  } else if(player_hit_tick_phase > 0) {
+    // we get into this branch when the player is still invincible and we have to switch visible|invisible states
     if (player_hit_tick > 0) {
+      // reduce the tick count
       player_hit_tick -= 1;
     } else if (player_hit_tick_phase > 0) {
+      // we reached a zero tick count so we switch the state from visible -> invisible or vice versa
       player_hit_tick = PLAYER_HIT_WAIT_TICK;
       player_hit_tick_phase -= 1;
     }
     if (player_hit_tick_phase > 0) {
+      // for even numbers we make the player visible for odd numbers invisible
       player_visible = player_hit_tick_phase % 2 == 0;
     }
   } else {
-    player_explosion = NULL;
+    // the invincible phase is over
     player_visible = true;
   }
 }
 
+// updating shoot cooldown (so when the player is allowed to shoot again)
 static void player_cooldown_update(void) {
   if (player_last_shoot_tick_count > 0) {
     player_last_shoot_tick_count -= 1;
@@ -192,12 +207,14 @@ void player_update(ALLEGRO_TIMER_EVENT event) {
   if (player_life <= 0) {
     return;
   }
+
+  // when the player is exploding or the game has ended we do not allow any movements
   if (!game_complete && !player_is_exploding()) {
     player_try_move_x(player_x_velocity);
     player_try_move_y(player_y_velocity);
+    player_check_hit();
   }
 
-  player_check_hit();
   player_cooldown_update();
   player_explosion_update();
 }

@@ -2,23 +2,21 @@
 #include "resources.h"
 #include "utils.h"
 
-#include <allegro5/allegro5.h>
 #include <allegro5/allegro_primitives.h>
 #include <stdlib.h>
-#include <assert.h>
 
 // we pre-init an array of projectiles - this is the maximum possible amount
 #define MAX_PROJECTILE_COUNT 50
 // how many pixels a projectile moves each tick
 #define PROJECTILE_SPEED 10
 
-typedef struct GAME_PROJECTILE {
+struct GAME_PROJECTILE {
   float pos_x;
   float pos_y;
   ALLEGRO_COLOR color;
   PROJECTILE_MOVE_TYPE moveType;
   bool enabled;
-} GAME_PROJECTILE;
+};
 
 GAME_PROJECTILE* projectiles[MAX_PROJECTILE_COUNT];
 ALLEGRO_COLOR shoot_color;
@@ -31,7 +29,9 @@ static void projectile_disable(GAME_PROJECTILE* projectile) {
   projectile->enabled = false;
 }
 
-static void projectile_enable(GAME_PROJECTILE* projectile, int pos_x, int pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
+static void projectile_enable(GAME_PROJECTILE* projectile, int pos_x, int pos_y,
+                              ALLEGRO_COLOR color,
+                              PROJECTILE_MOVE_TYPE moveType) {
   projectile->pos_x = pos_x;
   projectile->pos_y = pos_y;
   projectile->color = color;
@@ -63,14 +63,15 @@ static void projectile_redraw(GAME_PROJECTILE* projectile) {
                            projectile->color);
 }
 
-static bool projectile_instance_hit(GAME_PROJECTILE* projectile, float pos_x, float pos_y, int width, int height) {
-  return is_rect_intersect(
-    projectile->pos_x, projectile->pos_y, PROJECTILE_WIDTH, PROJECTILE_HEIGHT,
-    pos_x, pos_y, width, height
-  );
+static bool projectile_instance_hit(GAME_PROJECTILE* projectile, float pos_x,
+                                    float pos_y, int width, int height) {
+  return is_rect_intersect(projectile->pos_x, projectile->pos_y,
+                           PROJECTILE_WIDTH, PROJECTILE_HEIGHT, pos_x, pos_y,
+                           width, height);
 }
 
-GAME_PROJECTILE* projectile_add(float pos_x, float pos_y, ALLEGRO_COLOR color, PROJECTILE_MOVE_TYPE moveType) {
+GAME_PROJECTILE* projectile_add(float pos_x, float pos_y, ALLEGRO_COLOR color,
+                                PROJECTILE_MOVE_TYPE moveType) {
   GAME_PROJECTILE* projectile = NULL;
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     projectile = projectiles[i];
@@ -86,35 +87,30 @@ void projectile_remove(GAME_PROJECTILE* projectile) {
   projectile_disable(projectile);
 }
 
-bool projectile_enabled(GAME_PROJECTILE* projectile) {
-  return projectile->enabled;
-}
-
-GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height, PROJECTILE_MOVE_TYPE moveType) {
+GAME_PROJECTILE* projectile_hit(float pos_x, float pos_y, int width, int height,
+                                PROJECTILE_MOVE_TYPE moveType) {
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
     GAME_PROJECTILE* projectile = projectiles[i];
-    if (projectile->enabled && projectile->moveType == moveType && projectile_instance_hit(projectile, pos_x, pos_y, width, height)) {
+    if (projectile->enabled && projectile->moveType == moveType &&
+        projectile_instance_hit(projectile, pos_x, pos_y, width, height)) {
       return projectile;
     }
   }
   return NULL;
 }
 
+bool projectile_enabled(GAME_PROJECTILE* projectile) {
+  return projectile->enabled;
+}
+
 void projectile_engine_init(void) {
   shoot_color = al_map_rgb(255, 255, 255);
 
   for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
-    GAME_PROJECTILE* projectile = (GAME_PROJECTILE*)assert_not_null(malloc(sizeof(GAME_PROJECTILE)), "Projectile");
+    GAME_PROJECTILE* projectile = (GAME_PROJECTILE*)assert_not_null(
+        malloc(sizeof(GAME_PROJECTILE)), "Projectile");
     projectile_disable(projectile);
     projectiles[i] = projectile;
-  }
-}
-
-void projectile_engine_destroy(void) {
-  for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
-    GAME_PROJECTILE* projectile = projectiles[i];
-    projectiles[i] = NULL;
-    free(projectile);
   }
 }
 
@@ -133,5 +129,13 @@ void projectile_engine_redraw(void) {
     if (projectile->enabled) {
       projectile_redraw(projectile);
     }
+  }
+}
+
+void projectile_engine_destroy(void) {
+  for (int i = 0; i < MAX_PROJECTILE_COUNT; i++) {
+    GAME_PROJECTILE* projectile = projectiles[i];
+    projectiles[i] = NULL;
+    free(projectile);
   }
 }

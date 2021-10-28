@@ -1,5 +1,3 @@
-// file: src/main.c
-
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdbool.h>
@@ -28,8 +26,6 @@ static void system_init(void) {
     init_or_exit(al_init_acodec_addon(), "image add-on");
     init_or_exit(al_init_ttf_addon(), "ttf add-on");
 
-    // al_set_new_display_option(ALLEGRO_SAMPLE_BUFFERS, 1, ALLEGRO_SUGGEST);
-    // al_set_new_display_option(ALLEGRO_SAMPLES, 8, ALLEGRO_SUGGEST);
     al_set_new_bitmap_flags(ALLEGRO_MIN_LINEAR | ALLEGRO_MAG_LINEAR);
     al_set_config_value(al_get_system_config(), "trace", "level", "debug");
     al_register_assert_handler(assert_handler);

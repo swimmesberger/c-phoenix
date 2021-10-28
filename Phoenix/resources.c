@@ -1,4 +1,3 @@
-// file: src/resources.c
 #include "resources.h"
 
 #include "utils.h"

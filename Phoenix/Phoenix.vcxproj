@@ -193,8 +193,8 @@
     <ClInclude Include="header.h" />
     <ClInclude Include="map.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="resources.h" />
     <ClInclude Include="projectile.h" />
+    <ClInclude Include="resources.h" />
     <ClInclude Include="sprite_anim.h" />
     <ClInclude Include="utils.h" />
   </ItemGroup>

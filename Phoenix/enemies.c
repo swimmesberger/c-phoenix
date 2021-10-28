@@ -117,32 +117,48 @@ static bool enemy_shoot(ENEMY* enemy) {
   return true;
 }
 
-static void enemies_update_shooting(void) {
+static void enemies_update_shooting_cooldown(void) {
+  // update global shoot cooldown
   if (enemy_last_shoot_tick_check_count > 0) {
     enemy_last_shoot_tick_check_count -= 1;
-    return;
   }
-  enemy_last_shoot_tick_check_count = ENEMY_SHOOT_CHECK_TICK;
-
   for (int i = 0; i < enemies_count; i++) {
     ENEMY* enemy = enemies[i];
-    if (enemy->is_destroyed || enemy->is_flying) {
-      continue;
-    }
+    // update enemy specific shoot cooldown
     if (enemy->last_shoot_tick_count > 0) {
       enemy->last_shoot_tick_count -= 1;
+    }
+  }
+}
+
+static void enemies_update_shooting(void) {
+  enemies_update_shooting_cooldown();
+  if (enemy_last_shoot_tick_check_count > 0) {
+    // global shoot cooldown has not elapsed yet
+    return;
+  }
+
+  // reset global shoot cooldown
+  enemy_last_shoot_tick_check_count = ENEMY_SHOOT_CHECK_TICK;
+  for (int i = 0; i < enemies_count; i++) {
+    ENEMY* enemy = enemies[i];
+    // destroyed enemies are not allowed to shoot
+    if (enemy->is_destroyed) {
       continue;
     }
-    
+
+    // roll the dice if the enemy is allowed to shoot
     bool should_start_shooting = random_number(1, ENEMY_SHOOT_PERCENTAGE) == 1;
     if (should_start_shooting) {
       enemy_shoot(enemy);
+      // only a single enemy per shoot tick is allowed to shoot 
+      break;
     }
   }
 }
 
 static void enemies_update_ai(void) {
-  // enemies_update_flying();
+  // enemies_update_flying(); // not implemented yet -> KAMIKAZE AI
   enemies_update_shooting();
 }
 
@@ -162,8 +178,10 @@ static void enemies_check_projectile_hit(void) {
     if (enemy->is_destroyed) {
       continue;
     }
+
     int enemy_width = sprite_animation_get_width(enemy_img);
     int enemy_height = sprite_animation_get_height(enemy_img);
+    // check if the current enemy got hit by an projectile
     GAME_PROJECTILE* hit_projectile = projectile_hit(enemy->pos_x, enemy->pos_y, enemy_width, enemy_height, PROJECTILE_MOVE_TYPE_UP);
     if (hit_projectile != NULL) {
       enemy_hit(i, enemy, hit_projectile);
@@ -171,22 +189,25 @@ static void enemies_check_projectile_hit(void) {
   }
 }
 
+// get a bounding box of the whole enemy formation based on the non-destroyed enemies
 static void enemies_get_bounding(ENEMY** left, ENEMY** top, ENEMY** right, ENEMY** bottom) {
   for (int i = 0; i < enemies_count; i++) {
     ENEMY* enemy = enemies[i];
-    if (!enemy->is_destroyed) {
-      if (left != NULL && ((*left) == NULL ||  enemy->form_pos_x < (*left)->form_pos_x)) {
-        *left = enemy;
-      }
-      if (top != NULL && ((*top) == NULL || enemy->form_pos_y < (*top)->form_pos_y)) {
-        *top = enemy;
-      }
-      if (right != NULL && ((*right) == NULL || enemy->form_pos_x > (*right)->form_pos_x)) {
-        *right = enemy;
-      }
-      if (bottom != NULL && ((*bottom) == NULL || enemy->form_pos_y > (*bottom)->form_pos_y)) {
-        *bottom = enemy;
-      }
+    if (enemy->is_destroyed) {
+      continue;
+    }
+
+    if (left != NULL && ((*left) == NULL ||  enemy->form_pos_x < (*left)->form_pos_x)) {
+      *left = enemy;
+    }
+    if (top != NULL && ((*top) == NULL || enemy->form_pos_y < (*top)->form_pos_y)) {
+      *top = enemy;
+    }
+    if (right != NULL && ((*right) == NULL || enemy->form_pos_x > (*right)->form_pos_x)) {
+      *right = enemy;
+    }
+    if (bottom != NULL && ((*bottom) == NULL || enemy->form_pos_y > (*bottom)->form_pos_y)) {
+      *bottom = enemy;
     }
   }
 }
@@ -204,6 +225,7 @@ static void enemies_update_formation(void) {
     // when the right most enemy reaches the most right position change motion to right -> left
     enemies_formation_move_type = ENEMY_FORMATION_MOVE_TYPE_LEFT;
   }
+  // +-1px right/left based on current move type
   float x_delta = enemies_formation_move_type == ENEMY_FORMATION_MOVE_TYPE_LEFT ? -1 : +1;
 
   // move the whole formation forward as long as the most bottom enemy has still some space to the screen bottom
@@ -221,6 +243,7 @@ static void enemies_update_formation(void) {
     ENEMY* enemy = enemies[i];
     enemy->form_pos_x += x_delta;
     enemy->form_pos_y += y_delta;
+    // do not change the real position when the enems is in kamikaze mode
     if (!enemy->is_flying) {
       enemy->pos_x = enemy->form_pos_x;
       enemy->pos_y = enemy->form_pos_y;
@@ -238,17 +261,18 @@ void enemies_init(LEVEL_TYPE levelType) {
   enemies_count = 0;
 
   switch (levelType) {
-    case Level1:
+    case LEVEL_TYPE_LEVEL_1:
       enemies_init_level1();
       break;
   }
+
+  // every enemy is always in "sync" with the other so we only need to animate a single sprite that is used for every enemy
+  sprite_animation_start(enemy_img, SPRITE_ANIM_PLAY_MODE_LOOP);
 }
 
 void enemies_update(ALLEGRO_TIMER_EVENT event) {
-  if (!sprite_animation_is_started(enemy_img)) {
-    sprite_animation_start(enemy_img, SPRITE_ANIM_PLAY_MODE_LOOP);
-  }
   sprite_animation_update(enemy_img);
+  // these things does not need update when the game has ended
   if (!game_complete) {
     enemies_update_formation();
     enemies_check_projectile_hit();
@@ -266,6 +290,7 @@ void enemies_redraw(void) {
   }
 }
 
+// count of still alive enemies
 int enemies_get_count(void) {
   int count = 0;
   for (int i = 0; i < enemies_count; i++) {
@@ -278,6 +303,7 @@ int enemies_get_count(void) {
   return count;
 }
 
+// is the passed rectangle (e.g. the player) hit by one of the enemies
 bool enemies_hit(float pos_x, float pos_y, int width, int height) {
   for (int i = 0; i < enemies_count; i++) {
     ENEMY* enemy = enemies[i];

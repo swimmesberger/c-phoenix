@@ -33,17 +33,11 @@
     <ClCompile Include="player.c">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="projectile.c">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="background.c">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="enemies.c">
       <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="sprite_anim.h">
-      <Filter>Header Files</Filter>
     </ClCompile>
     <ClCompile Include="sprite_anim.c">
       <Filter>Source Files</Filter>
@@ -55,6 +49,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="header.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="projectile.c">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -71,9 +68,6 @@
     <ClInclude Include="player.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="projectile.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="background.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -87,6 +81,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="header.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_anim.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="projectile.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #include "explosions.h"
 #include "utils.h"
 #include "sprite_anim.h"
+
 #include <allegro5/allegro_audio.h>
 #include <stdlib.h>
 
@@ -9,12 +10,12 @@
 #define EXPLOSION_SPEED 0.8f
 #define EXPLOSION_FRAME_COUNT 3
 
-typedef struct EXPLOSION {
+struct EXPLOSION {
   float pos_x;
   float pos_y;
   bool enabled;
   SPRITE_ANIM* explosion_sprite;
-} EXPLOSION;
+};
 
 ALLEGRO_SAMPLE* explosion_sound;
 ALLEGRO_BITMAP* explosion_img;
